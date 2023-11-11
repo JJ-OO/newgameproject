@@ -90,6 +90,44 @@ class _GameBoardState extends State<GameBoard> {
       },
     );
   }
+bool checkCollision({Direction? direction}) {
+    for (int i = 0; i < currentPiece.position.length; i++) {
+      int row = (currentPiece.position[i] / rowLength).floor();
+      int col = currentPiece.position[i] % rowLength;
+
+      if (direction == Direction.left) {
+        col -= 1;
+      } else if (direction == Direction.right) {
+        col += 1;
+      } else if (direction == Direction.down) {
+        row += 1;
+      }
+
+      if (row >= colLength || col < 0 || col >= rowLength) {
+        return true;
+      }
+
+      if (row >= 0 && col >= 0) {
+        if (gameBoard[row][col] != null) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  void checkLanding() {
+    if (checkCollision(direction: Direction.down)) {
+      for (int i = 0; i < currentPiece.position.length; i++) {
+        int row = (currentPiece.position[i] / rowLength).floor();
+        int col = currentPiece.position[i] % rowLength;
+        if (row >= 0 && col >= 0) {
+          gameBoard[row][col] = currentPiece.type;
+        }
+      }
+  }
+
 
   void moveLeft() {
     if (!checkCollision(direction: Direction.left)) {

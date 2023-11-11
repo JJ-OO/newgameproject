@@ -26,6 +26,73 @@ class GameBoard extends StatefulWidget {
   _GameBoardState createState() => _GameBoardState();
 }
 
+class _GameBoardState extends State<GameBoard> {
+  Piece currentPiece = Piece(type: Tetromino.T);
+
+  int currentScore = 0;
+
+  bool gameOver = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    startGame();
+  }
+
+  void startGame() {
+    currentPiece.initalizePiece();
+
+    Duration frameRate = const Duration(milliseconds: 400);
+
+    gameLoop(frameRate);
+  }
+
+  void gameLoop(Duration frameRate) {
+    Timer.periodic(
+      frameRate,
+      (timer) {
+        setState(() {
+          clearLines();
+
+          checkLanding();
+
+          if (gameOver == true) {
+            timer.cancel();
+            showGameOverDialog();
+          }
+
+          currentPiece.movePiece(Direction.down);
+        });
+      },
+    );
+  }
+
+  void showGameOverDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Has perdido!!'),
+          content: Text('Tu puntaje final es: $currentScore'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                resetGame();
+
+                Navigator.of(context).pop();
+              },
+              child: const Text('Jugar de nuevo'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,

@@ -42,3 +42,60 @@ class Piece {
       default:
     }
   }
+
+  void movePiece(Direction direction) {
+    switch (direction) {
+      case Direction.down:
+        for (int i = 0; i < position.length; i++) {
+          position[i] += rowLength;
+        }
+        break;
+      case Direction.left:
+        for (int i = 0; i < position.length; i++) {
+          position[i] -= 1;
+        }
+        break;
+      case Direction.right:
+        for (int i = 0; i < position.length; i++) {
+          position[i] += 1;
+        }
+        break;
+
+      default:
+    }
+  }
+
+  bool positionIsValid(int position) {
+    int row = (position / rowLength).floor();
+    int col = position % rowLength;
+
+    if (row < 0 || col < 0 || gameBoard[row][col] != null) {
+      return false;
+    }
+
+    else {
+      return true;
+    }
+  }
+
+  bool piecePositionIsValid(List<int> piecePosition) {
+    bool firstColOccupied = false;
+    bool lastColOccupied = false;
+
+    for (int pos in piecePosition) {
+      if (!positionIsValid(pos)) {
+        return false;
+      }
+
+      int col = pos % rowLength;
+
+      if (col == 0) {
+        firstColOccupied = true;
+      }
+      if (col == rowLength - 1) {
+        lastColOccupied = true;
+      }
+    }
+
+    return !(firstColOccupied && lastColOccupied);
+  }

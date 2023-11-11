@@ -91,6 +91,26 @@ class _GameBoardState extends State<GameBoard> {
     );
   }
 
+  void moveLeft() {
+    if (!checkCollision(direction: Direction.left)) {
+      setState(() {
+        currentPiece.movePiece(Direction.left);
+      });
+    }
+    checkLanding();
+  }
+
+  void moveRight() {
+    if (!checkCollision(direction: Direction.right)) {
+      setState(() {
+        currentPiece.movePiece(Direction.right);
+      });
+    }
+    checkLanding();
+  }
+
+
+
   void rotatePiece() {
     setState(() {
       currentPiece.rotatePiece();

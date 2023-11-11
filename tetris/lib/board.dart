@@ -91,7 +91,28 @@ class _GameBoardState extends State<GameBoard> {
     );
   }
 
+  void rotatePiece() {
+    setState(() {
+      currentPiece.rotatePiece();
+    });
+    checkLanding();
+  }
 
+  void resetGame() {
+    gameBoard = List.generate(
+      colLength,
+      (i) => List.generate(
+        rowLength,
+        (j) => null,
+      ),
+    );
+    gameOver = false;
+    currentScore = 0;
+    createNewPiece();
+    startGame();
+  }
+
+  @override
 
  Widget build(BuildContext context) {
     return Scaffold(

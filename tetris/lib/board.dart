@@ -128,6 +128,18 @@ bool checkCollision({Direction? direction}) {
       }
   }
 
+  void createNewPiece() {
+    Random rand = Random();
+    Tetromino randomType =
+        Tetromino.values[rand.nextInt(Tetromino.values.length)];
+    currentPiece = Piece(type: randomType);
+    currentPiece.initalizePiece();
+
+    if (isGameOver()) {
+      gameOver = true;
+    }
+  }
+
 
   void moveLeft() {
     if (!checkCollision(direction: Direction.left)) {

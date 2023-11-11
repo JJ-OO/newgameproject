@@ -90,7 +90,8 @@ class _GameBoardState extends State<GameBoard> {
       },
     );
   }
-bool checkCollision({Direction? direction}) {
+
+  bool checkCollision({Direction? direction}) {
     for (int i = 0; i < currentPiece.position.length; i++) {
       int row = (currentPiece.position[i] / rowLength).floor();
       int col = currentPiece.position[i] % rowLength;
@@ -126,6 +127,8 @@ bool checkCollision({Direction? direction}) {
           gameBoard[row][col] = currentPiece.type;
         }
       }
+      createNewPiece();
+    }
   }
 
   void createNewPiece() {
@@ -140,26 +143,7 @@ bool checkCollision({Direction? direction}) {
     }
   }
 
-
-  void moveLeft() {
-    if (!checkCollision(direction: Direction.left)) {
-      setState(() {
-        currentPiece.movePiece(Direction.left);
-      });
-    }
-    checkLanding();
-  }
-
-  void moveRight() {
-    if (!checkCollision(direction: Direction.right)) {
-      setState(() {
-        currentPiece.movePiece(Direction.right);
-      });
-    }
-    checkLanding();
-  }
-
-void clearLines() {
+  void clearLines() {
     for (int row = colLength - 1; row >= 0; row--) {
       bool rowIsFull = true;
       for (int col = 0; col < rowLength; col++) {
@@ -187,6 +171,23 @@ void clearLines() {
     return false;
   }
 
+  void moveLeft() {
+    if (!checkCollision(direction: Direction.left)) {
+      setState(() {
+        currentPiece.movePiece(Direction.left);
+      });
+    }
+    checkLanding();
+  }
+
+  void moveRight() {
+    if (!checkCollision(direction: Direction.right)) {
+      setState(() {
+        currentPiece.movePiece(Direction.right);
+      });
+    }
+    checkLanding();
+  }
 
   void rotatePiece() {
     setState(() {
@@ -210,8 +211,7 @@ void clearLines() {
   }
 
   @override
-
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(

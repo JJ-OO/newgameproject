@@ -159,6 +159,33 @@ bool checkCollision({Direction? direction}) {
     checkLanding();
   }
 
+void clearLines() {
+    for (int row = colLength - 1; row >= 0; row--) {
+      bool rowIsFull = true;
+      for (int col = 0; col < rowLength; col++) {
+        if (gameBoard[row][col] == null) {
+          rowIsFull = false;
+          break;
+        }
+      }
+      if (rowIsFull) {
+        for (int r = row; r > 0; r--) {
+          gameBoard[r] = List.from(gameBoard[r - 1]);
+        }
+        gameBoard[0] = List.generate(rowLength, (col) => null);
+        currentScore++;
+      }
+    }
+  }
+
+  bool isGameOver() {
+    for (int col = 0; col < rowLength; col++) {
+      if (gameBoard[0][col] != null) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 
   void rotatePiece() {
